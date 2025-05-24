@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6495ED, #4682B4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url(0.jpg);
+            background-size: cover;
+        }
+        .signup-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0px 40px rgb(0, 51, 255);
+            display: flex;
+            width: 80%;
+            max-width: 960px;
+            overflow: hidden;
+        }
+        .left-section {
+            background-image: url('4.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            text-align: center;
+        }
+        .logo-container {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .compass-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 30px;
+        }
+        .compass {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgb(255, 255, 255);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: compassRotate 30s linear infinite;
+            z-index: 1;
+        }
+        .compass .needle {
+            position: absolute;
+            width: 4px;
+            height: 40%;
+            background: rgb(0, 247, 255);
+            border-radius: 2px;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+        }
+        .compass .needle::before {
+            content: '';
+            position: absolute;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0px;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 8px solid rgb(0, 247, 255);
+            filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.7));
+        }
+        .compass .direction {
+            position: absolute;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            user-select: none;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+        }
+        .compass .north { top: 5px; left: 50%; transform: translateX(-50%); }
+        .compass .east { right: 5px; top: 50%; transform: translateY(-50%); }
+        .compass .south { bottom: 5px; left: 50%; transform: translateX(-50%); }
+        .compass .west { left: 5px; top: 50%; transform: translateY(-50%); }
+        @keyframes compassRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .left-section h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            margin-top: 0;
+            width: 100%;
+            padding: 20px;
+            color: white;
+            border-radius: 10px;
+            cursor: default;
+            transition: none;
+            text-shadow: 2px 2px 40px rgb(63, 124, 255);
+            box-sizing: border-box;
+        }
+        .left-section p {
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 50px rgb(63, 124, 255);
+        }
+        .left-section button {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .left-section button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .right-section {
+            background-color: white;
+            padding: 40px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 0 15px 15px 0;
+        }
+        .right-section h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        .right-section label {
+            display: block;
+            margin-top: 15px;
+            color: #555;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+        .right-section input[type="text"],
+        .right-section input[type="email"],
+        .right-section input[type="password"] {
+            width: calc(100% - 30px);
+            padding: 10px 15px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            box-sizing: border-box;
+            font-size: 0.95em;
+        }
+        .right-section input[type="text"]:focus,
+        .right-section input[type="email"]:focus,
+        .right-section input[type="password"]:focus {
+            outline: none;
+            border-color: #6495ED;
+            box-shadow: 0 0 5px rgba(100, 149, 237, 0.25);
+        }
+        .right-section button[type="submit"] {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background: #6495ED;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+        .right-section button[type="submit"]:hover {
+            background: #4682B4;
+        }
+        .right-section .info {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 8px;
+        }
+        .right-section .password-options {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .right-section .password-options input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .right-section .password-options label {
+            margin-top: 0;
+            font-weight: normal;
+            font-size: 0.85em;
+            color: #666;
+        }
+        .right-section .terms-agreement {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+        .right-section .terms-agreement input[type="checkbox"] {
+            margin-top: 3px;
+            margin-right: 8px;
+        }
+        .right-section .terms-agreement label {
+            margin-top: 0;
+            font-weight: normal;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .right-section .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .right-section .signup-link a {
+            color: #6495ED;
+            text-decoration: none;
+        }
+        .right-section .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style for the modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black with opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-height: 80vh; /* Max height of the modal content */
+            overflow-y: auto;  /* Enable vertical scrollbar */
+            border-radius: 8px;
+            position: relative; /* Needed for close button positioning */
+        }
+
+        /* Style for the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        #terms-content {
+            padding: 20px;
+            line-height: 1.5;
+        }
+        #terms-content h2{
+          font-size: 1.5em;
+          color: #2c3e50;
+          margin-bottom: 10px;
+        }
+        #terms-content p{
+          font-size: 1em;
+          color: #34495e;
+          margin-bottom: 15px;
+        }
+        #terms-content ul{
+          margin-left: 20px;
+          margin-bottom: 15px;
+
+        }
+        #terms-content li{
+          font-size: 1em;
+          color: #34495e;
+          margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="left-section">
+            <div class="logo-container">
+                <img src="logologo.png" alt="Logo">
+            </div>
+            <div class="compass-container">
+                <div class="compass" aria-label="Animated Compass Icon" role="img">
+                    <div class="needle"></div>
+                    <div class="direction north">N</div>
+                    <div class="direction east">E</div>
+                    <div class="direction south">S</div>
+                    <div class="direction west">W</div>
+                </div>
+            </div>
+            <h2>Explore the World</h2>
+            <p>Sign up and start your adventure with us!</p>
+            <button onclick="window.location.href='/Finals%20nato/index.html'">Go to Home</button>
+        </div>
+        <div class="right-section">
+            <h2>Register Here</h2>
+            <form action="signup.php" method="POST" id="signupForm">
+                <label for="full_name">Name</label>
+                <input type="text" name="full_name" id="full_name" placeholder="Enter your name" required>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Choose a username" required>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                <div class="info">Password must be at least 8 characters with a number and special character.</div>
+                <div class="password-options">
+                    <input type="checkbox" id="show-password" onclick="togglePassword()">
+                    <label for="show-password">Show Password</label>
+                </div>
+                <div class="terms-agreement">
+                    <input type="checkbox" name="terms" id="terms" required>
+                    <label for="terms">I agree to the <a href="#" id="terms-link">Terms and conditions</a></label>
+                </div>
+                <button type="submit">Register</button>
+                <div class="signup-link">
+                    Already have an account? <a href="login.php">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="terms-content">
+                <h2>Terms and Conditions</h2>
+                <p>Welcome to Our Website! These terms and conditions outline the rules and regulations for the use of Compass Website.</p>
+
+                <p>By accessing this website, we assume you accept these terms and conditions. Do not continue to use Our Website if you do not agree to all of the terms and conditions stated on this page.</p>
+
+                <h3>1. Acceptance of Terms</h3>
+                  <p>
+                    By accessing and using Compass (hereinafter referred to as "the Service"), you agree to be bound by these Terms and Conditions ("Terms"). If you do not agree to these Terms, you are prohibited from using the Service.
+                  </p>
+
+                <h3>2. User Accounts</h3>
+                <ul>
+                  <li>
+                    <strong>Account Creation:</strong>  In order to access certain features of the Service, you may be required to create an account.  You agree to provide accurate, complete, and current information during the registration process.
+                  </li>
+                  <li>
+                    <strong>Account Security:</strong> You are responsible for maintaining the confidentiality of your account credentials and are liable for all activities that occur under your account.  Notify us immediately of any unauthorized access to your account.
+                  </li>
+                  <li>
+                    <strong>Account Termination:</strong> We reserve the right to suspend or terminate your account at any time for any reason, including violation of these Terms.
+                  </li>
+                </ul>
+
+                <h3>3. User Conduct</h3>
+                <p>
+                  You agree to use the Service only for lawful purposes and in a manner that does not infringe the rights of others or restrict or inhibit their use and enjoyment of the Service.  Prohibited conduct includes, but is not limited to:
+                </p>
+                <ul>
+                  <li>Posting or transmitting any content that is unlawful, harmful, threatening, abusive, harassing, defamatory, obscene, or otherwise objectionable.</li>
+                  <li>Impersonating any person or entity, or falsely stating or misrepresenting your affiliation with a person or entity.</li>
+                  <li>Interfering with or disrupting the Service or servers or networks connected to the Service.</li>
+                  <li>Attempting to gain unauthorized access to any portion of the Service or any other accounts, computer systems, or networks connected to the Service.</li>
+                    <li>Using any robot, spider, scraper, or other automated means to access the Service for any purpose without our express written permission.</li>
+                  <li>Violating any applicable laws or regulations.</li>
+                </ul>
+
+                <h3>4. Intellectual Property</h3>
+                <p>
+                  The Service and its original content, features, and functionality are owned by Compass and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.
+                </p>
+                <p>
+                  You may not modify, reproduce, distribute, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any of the material on our Service, except as generally permitted by the Service.
+                </p>
+
+                <h3>5. Disclaimer of Warranties</h3>
+                <p>
+                  THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS.  Compass MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED OR ERROR-FREE, THAT DEFECTS WILL BE CORRECTED, OR THAT THE SERVICE OR THE SERVERS THAT MAKE IT AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
+                </p>
+
+                <h3>6. Limitation of Liability</h3>
+                 <p>
+                    IN NO EVENT SHALL Compass, ITS AFFILIATES, DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, SUPPLIERS, OR LICENSORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING, WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM (I) YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICE; (II) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE SERVICE; (III) ANY CONTENT OBTAINED FROM THE SERVICE; AND (IV) UNAUTHORIZED ACCESS, USE OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT, WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE) OR ANY OTHER LEGAL THEORY, WHETHER OR NOT WE HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE.
+                </p>
+
+                <h3>7. Indemnification</h3>
+                <p>
+                  You agree to indemnify and hold harmless Compass, its affiliates, officers, directors, employees, agents, and licensors from and against any and all claims, liabilities, damages, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of the Service.
+                </p>
+
+                <h3>8. Governing Law</h3>
+                <p>
+                  These Terms shall be governed by and construed in accordance with the laws of [Your Country/State], without regard to its conflict of law provisions.
+                </p>
+
+                <h3>9. Changes to Terms</h3>
+                <p>
+                  We reserve the right to modify or replace these Terms at any time.  If a revision is material, we will provide at least [Number] days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.  Your continued use of the Service after any such changes constitutes your acceptance of the new Terms.
+                </p>
+
+                <h3>10. Contact Us</h3>
+                <p>
+                  If you have any questions about these Terms, please contact us.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById('password');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        }
+
+
+        var modal = document.getElementById("termsModal");
+
+
+        var termsLink = document.getElementById("terms-link");
+
+        
+        var span = document.getElementsByClassName("close")[0];
+
+        
+        termsLink.onclick = function(event) {
+            event.preventDefault();
+            modal.style.display = "block";
+        }
+
+        
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+    
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

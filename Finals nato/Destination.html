@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Featured Destinations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    /* === RESET & BASE STYLES === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(120deg, #e0f2f7 0%, #bbdefb 100%); /* Light blue to sky blue from Trip Planner.php */
+      min-height: 100vh;
+      color: #1a237e; /* Darker blue for text from Trip Planner.php */
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://www.transparenttextures.com/patterns/cubes.png');
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    :root {
+      /* Shades of blue for primary, secondary, and accent from Trip Planner.php */
+      --primary: #2196f3; /* A vibrant blue */
+      --secondary: #03a9f4; /* A lighter, bright blue */
+      --accent: #90caf9; /* A even lighter blue, for subtle highlights */
+      --bg-glass: rgba(227, 242, 253, 0.72); /* Light blue tint with transparency */
+      --shadow: 0 8px 32px rgba(33, 150, 243, 0.13); /* Shadow with blue tint */
+      --radius: 18px;
+    }
+
+    /* Navigation */
+    .header-top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      background: var(--bg-glass); /* From Trip Planner.php */
+      backdrop-filter: blur(14px); /* From Trip Planner.php */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 48px; /* From Trip Planner.php */
+      box-shadow: 0 8px 24px rgba(33, 150, 243, 0.08); /* Blue tinted shadow from Trip Planner.php */
+      border-radius: 0 0 var(--radius) var(--radius); /* From Trip Planner.php */
+      z-index: 100;
+      height: 90px;
+    }
+
+    .header-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      position: relative;
+      height: 36px;
+      width: 36px;
+      overflow: hidden;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px rgba(3, 169, 244, 0.4); /* Blue tinted shadow */
+      background: #fff;
+      transition: transform 0.2s;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .header-logo:hover {
+      transform: scale(1.07) rotate(-4deg);
+    }
+
+    .top-nav {
+      margin-right: 100px;
+    }
+
+    .top-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.1rem; /* From Trip Planner.php */
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+    }
+
+    .top-nav li a button {
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(90deg, #0288d1 0%, #2196f3 100%); /* Darker blue to vibrant blue from Trip Planner.php */
+      padding: 10px 26px; /* From Trip Planner.php */
+      border-radius: 13px; /* From Trip Planner.php */
+      font-size: 1.05rem; /* From Trip Planner.php */
+      box-shadow: 0 2px 10px rgba(33, 150, 243, 0.1); /* Blue tinted shadow from Trip Planner.php */
+      transition: all 0.25s;
+      user-select: none;
+      border: none;
+      outline: none;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .top-nav li a button:hover, .top-nav li a button:focus {
+      background: linear-gradient(90deg, #2196f3 0%, #0288d1 100%); /* Reversed gradient on hover from Trip Planner.php */
+      color: #fff;
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 6px 16px rgba(33, 150, 243, 0.3); /* Stronger blue tinted shadow from Trip Planner.php */
+    }
+
+    /* === Animated waves === */
+    .waves {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      height: 180px;
+      pointer-events: none;
+      opacity: 0.8;
+      fill: #bbdefb; /* Adjusted wave color to fit new palette */
+    }
+
+    /* === HERO SECTION === */
+    .hero {
+      margin-top: 150px;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 4rem; /* From Trip Planner.php */
+      font-weight: 800; /* From Trip Planner.php */
+      background: linear-gradient(90deg, #0d47a1 0%, #1976d2 50%, #2196f3 100%); /* Blue gradient for title from Trip Planner.php */
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 16px; /* From Trip Planner.php */
+      letter-spacing: -1px;
+    }
+
+    .hero-title-accent {
+      color: var(--primary); /* Vibrant blue from Trip Planner.php */
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem; /* From Trip Planner.php */
+      color: #263238; /* Dark blue-grey from Trip Planner.php */
+      margin-bottom: 32px; /* From Trip Planner.php */
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .hero-cta {
+      width: fit-content; /* Allow content to define width */
+      margin: 0 auto; /* Center the button */
+      padding: 15px 40px;
+      background: linear-gradient(90deg, #0288d1 0%, #2196f3 100%); /* Blue gradient for submit button from Trip Planner.php */
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem; /* From Trip Planner.php */
+      border: none;
+      border-radius: 10px; /* From Trip Planner.php */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2); /* Blue tinted shadow from Trip Planner.php */
+    }
+
+    .hero-cta:hover {
+      background: linear-gradient(90deg, #2196f3 0%, #0288d1 100%); /* Reversed blue gradient on hover from Trip Planner.php */
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3); /* Stronger blue tinted shadow from Trip Planner.php */
+    }
+
+    /* === MAIN CONTENT === */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      padding: 40px 40px 40px 40px;
+      max-width: 1700px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+    }
+
+    .destination-list {
+      display: grid;
+      gap: 38px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+
+    .destination-item {
+      background: var(--bg-glass); /* From Trip Planner.php */
+      backdrop-filter: blur(16px); /* From Trip Planner.php */
+      border-radius: var(--radius); /* From Trip Planner.php */
+      box-shadow: 0 0px 30px rgba(33, 150, 243, 0.82); /* Strong blue shadow from Trip Planner.php */
+      padding: 32px; /* Adjusted padding from Trip Planner.php */
+      display: flex;
+      flex-direction: column;
+      gap: 28px; /* Adjusted gap from Trip Planner.php */
+      border: 1px solid rgba(144, 202, 249, 0.3); /* Lighter blue border from Trip Planner.php */
+      position: relative;
+      overflow: hidden;
+    }
+
+    .destination-item::after {
+      content: '';
+      position: absolute;
+      left: -30%; top: -30%;
+      width: 80%; height: 80%;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 80%); /* Adjusted color */
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      height: 44px;
+      margin-bottom: 10px;
+    }
+    
+    .more-details-btn {
+      width: 140px;
+      height: 40px;
+      background: linear-gradient(90deg, #0288d1 0%, #2196f3 100%); /* Blue gradient from Trip Planner.php */
+      color: white;
+      border-radius: 10px; /* From Trip Planner.php */
+      font-size: 1.1rem; /* From Trip Planner.php */
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; /* From Trip Planner.php */
+      border: none;
+      outline: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2); /* Blue tinted shadow from Trip Planner.php */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease; /* From Trip Planner.php */
+    }
+
+    .more-details-btn:hover {
+      background: linear-gradient(90deg, #2196f3 0%, #0288d1 100%); /* Reversed blue gradient on hover from Trip Planner.php */
+      transform: translateY(-2px); /* From Trip Planner.php */
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3); /* Stronger blue tinted shadow from Trip Planner.php */
+    }
+    
+    .destination-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 2;
+      position: relative;
+    }
+    
+    .destination-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #1a237e; /* Darker blue for text from Trip Planner.php */
+      margin: 0 0 8px 0;
+    }
+    
+    .destination-description {
+      font-size: 1.05rem;
+      color: #263238; /* Dark blue-grey for description from Trip Planner.php */
+      line-height: 1.6;
+      margin: 0;
+    }
+    
+    .destination-image-price {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: rgba(227, 242, 253, 0.72); /* Light blue tint with transparency from Trip Planner.php */
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(33, 150, 243, 0.1); /* Adjusted shadow */
+    }
+    
+    .destination-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.2); /* Blue tinted shadow */
+      border: 2px solid var(--accent); /* Light blue border */
+    }
+    
+    .price-container {
+      flex: 1;
+    }
+    
+    .price {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a237e; /* Darker blue for text from Trip Planner.php */
+      margin: 0 0 8px 0;
+    }
+    
+    .price-includes {
+      font-size: 0.95rem;
+      color: #263238; /* Dark blue-grey from Trip Planner.php */
+      margin: 0;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-container {
+      background-color: white;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      border-radius: 12px;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      padding: 24px;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--primary); /* Vibrant blue from Trip Planner.php */
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .modal-close:hover {
+      background-color: rgba(33, 150, 243, 0.1); /* Blue tinted hover */
+    }
+    
+    .modal-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1a237e; /* Darker blue for text from Trip Planner.php */
+      margin-bottom: 20px;
+      padding-right: 40px;
+    }
+    
+    .modal-content {
+      color: #263238; /* Dark blue-grey for description from Trip Planner.php */
+      line-height: 1.6;
+    }
+    
+    .modal-divider {
+      border: none;
+      height: 1px;
+      background-color: #e3f2fd; /* Very light blue background from Trip Planner.php */
+      margin: 20px 0;
+    }
+    
+    .modal-list {
+      margin-top: 12px;
+      padding-left: 20px;
+    }
+    
+    .modal-list li {
+      margin-bottom: 8px;
+      color: #263238; /* Dark blue-grey from Trip Planner.php */
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 900px) {
+      .header-top {
+        padding: 12px 18px;
+        height: auto;
+      }
+      .main-content {
+        padding: 120px 12px 24px 12px;
+      }
+      .hero-title { font-size: 3rem; /* Adjusted for smaller screens */ }
+      .modal-container {
+        width: 95%;
+        padding: 16px;
+      }
+    }
+    @media (max-width: 600px) {
+      .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 6vw;
+      }
+      .top-nav ul {
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .main-content {
+        padding: 110px 4vw 14px 4vw;
+      }
+      .hero-title { font-size: 2.5rem; /* Adjusted for smaller screens */ }
+      .hero-subtitle { font-size: 0.9rem; /* Adjusted for smaller screens */ }
+      .destination-list {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+      .destination-image-price {
+        flex-direction: column;
+        text-align: center;
+      }
+      .more-details-btn {
+        width: 120px;
+      }
+      .modal-title {
+        font-size: 1.3rem;
+      }
+      .destination-title {
+        font-size: 1.3rem;
+      }
+      .price {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg class="waves" viewBox="0 0 1440 320"><path fill="#bbdefb" fill-opacity="0.4" d="M0,288L60,272C120,256,240,224,360,202.7C480,181,600,171,720,154.7C840,139,960,117,1080,122.7C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+
+  <header class="header-top">
+    <a href="landing page.html" class="header-logo-link">
+      <img src="Compass_Site/Assets/images/compass_logo.gif" alt="Compass Logo" class="header-logo" />
+      <span style="font-family: 'Montserrat',sans-serif; font-weight:700; font-size:1.25rem; color:var(--primary);"></span>
+    </a>
+    <nav class="top-nav">
+      <ul>
+        <li><a href="Travelog.php"><button>Travelog</button></a></li>
+        <li><a href="LoginSignup/login.php"><button>Log out</button></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1 class="hero-title">Adventure Awaits: <span class="hero-title-accent">Pick Your Destinations</span></h1>
+    <div class="hero-subtitle">Handpicked trips for the bold, the curious, and the wild at heart.</div>
+    <a href="Trip Planner.php"><button class="hero-cta">Plan Your Next Trip</button></a>
+  </section>
+
+  <main class="main-content">
+    <div class="destination-list" id="destination-grid">
+      <div class="destination-item" id="surf-card">
+        <div class="button-container">
+          <button class="more-details-btn" data-modal="surf-modal">
+            More Details
+          </button>
+        </div>
+        
+        <div class="destination-content">
+          <div>
+            <h3 class="destination-title">California Surf Adventure</h3>
+            <p class="destination-description">
+              Experience the thrill of hurricane-inspired summertime swells along the beautiful California coast. Perfect for surfers of all levels.
+            </p>
+          </div>
+          
+          <div class="destination-image-price">
+            <img src="images/surf1.jpg" alt="Surfing in California" class="destination-image" />
+            <div class="price-container">
+              <p class="price">$960</p>
+              <p class="price-includes">Includes lodging, meals, equipment, and round-trip airfare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="destination-item" id="bike-card">
+        <div class="button-container">
+          <button class="more-details-btn" data-modal="bike-modal">
+            More Details
+          </button>
+        </div>
+        
+        <div class="destination-content">
+          <div>
+            <h3 class="destination-title">New Zealand Mountain Biking</h3>
+            <p class="destination-description">
+              Tackle steep inclines and fast roads through New Zealand's breathtaking landscapes. An unforgettable adventure for cycling enthusiasts.
+            </p>
+          </div>
+          
+          <div class="destination-image-price">
+            <img src="images/biking.jpg" alt="Mountain biking in New Zealand" class="destination-image" />
+            <div class="price-container">
+              <p class="price">$1,490</p>
+              <p class="price-includes">Includes lodging, meals, bike rental, and round-trip airfare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="destination-item" id="climb-card">
+        <div class="button-container">
+          <button class="more-details-btn" data-modal="climb-modal">
+            More Details
+          </button>
+        </div>
+        
+        <div class="destination-content">
+          <div>
+            <h3 class="destination-title">Devil's Tower Climbing</h3>
+            <p class="destination-description">
+              Scale the majestic cliffs of Devil's Tower in Wyoming during this three-day guided climbing adventure suitable for all skill levels.
+            </p>
+          </div>
+          
+          <div class="destination-image-price">
+            <img src="images/climb.jpg" alt="Rock climbing at Devil's Tower" class="destination-image" />
+            <div class="price-container">
+              <p class="price">$740</p>
+              <p class="price-includes">Includes lodging, meals, climbing gear, and round-trip airfare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <div class="modal-overlay" id="surf-modal">
+    <div class="modal-container">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">Surfing Adventure Details</h2>
+      <div class="modal-content">
+        <p>
+          Summertime in southern California, what could be better? Let us know what you're looking for and we'll find it and take you there. Do you want big, fast waves or gentle rollers? Do you prefer a slamming beach break or a long, peeling point break? California's got it all so sign up now before summer's gone.
+        </p>
+        <hr class="modal-divider">
+        
+        <p>You'll stay at the centrally located Newport Bonita in Newport Beach. From there you can strike out to Trestles, Malibu, Salt Creek, The Wedge, San Onofre, and a dozen secret spots. Or, you can just walk out to the local beach breaks.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal-overlay" id="bike-modal">
+    <div class="modal-container">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">Mountain Biking Adventure Details</h2>
+      <div class="modal-content">
+        <p>
+          The Karapoti Trail, home to the Trek Karapoti Classic, twists around the Akatarawa Range and deliver 31 miles of technical single track and challenging fire road climbs. During the ride there are several vistas to soothe those eyes while you reward your burning legs by taking a quick breather.
+        </p>
+        <hr class="modal-divider">
+        <p>
+          Upper Hutt is New Zealand's mountain biking hub, and if you're looking for a group ride, stop by Mountain Trails bike shop. Or if you want a number plate on your handlebar, the Trek Karapoti Classic is scheduled for March 4, 2001.
+        </p>
+
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal-overlay" id="climb-modal">
+    <div class="modal-container">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">Rock Climbing Adventure Details</h2>
+      <div class="modal-content">
+        <p>
+          Experience the thrill of scaling Devil's Tower, one of America's most iconic climbing destinations. Our experienced guides ensure a safe and unforgettable adventure.
+        </p>
+        <hr class="modal-divider">
+        <p>
+          Devil's Tower offers routes for all skill levels, from beginner to expert. The unique columnar jointing of this ancient volcanic formation creates natural cracks and features that make for excellent climbing opportunities.
+        </p>
+      
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all elements
+      const detailButtons = document.querySelectorAll('.more-details-btn');
+      const modalOverlays = document.querySelectorAll('.modal-overlay');
+      const closeButtons = document.querySelectorAll('.modal-close');
+      
+      // Function to close all modals
+      function closeAllModals() {
+        modalOverlays.forEach(modal => {
+          modal.classList.remove('active');
+        });
+        // Enable scrolling on body
+        document.body.style.overflow = 'auto';
+      }
+      
+      // Add click event to detail buttons
+      detailButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const modalId = this.getAttribute('data-modal');
+          const modal = document.getElementById(modalId);
+          
+          // Close any open modals first
+          closeAllModals();
+          
+          // Show this modal
+          modal.classList.add('active');
+          
+          // Disable scrolling on body when modal is open
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      
+      // Add click event to close buttons
+      closeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeAllModals();
+        });
+      });
+      
+      // Close modal when clicking on overlay (outside the modal content)
+      modalOverlays.forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          // Only close if the click was directly on the overlay, not its children
+          if (e.target === this) {
+            closeAllModals();
+          }
+        });
+      });
+      
+      // Close modal when pressing Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeAllModals();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

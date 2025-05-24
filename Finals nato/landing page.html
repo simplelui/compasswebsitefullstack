@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compass Travel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(to bottom, #f0f7ff, #ffffff);
+      min-height: 100vh;
+      color: #1e3a8a;
+      overflow-x: hidden;
+    }
+    
+    /* Header styles - copied and adapted from the provided code */
+    .header-top {
+      position: fixed;
+      top: 0; 
+      left: 0; 
+      width: 100vw;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      box-shadow: 0 4px 24px rgba(80, 80, 180, 0.07);
+      border-bottom: 1px solid #e0e7ff;
+      z-index: 10;
+      height: 90px;
+      transition: background 0.3s;
+    }
+    
+    .header-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+    
+    .header-logo {
+      max-height: 60px;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px rgba(80,80,180,0.13);
+      transition: transform 0.3s;
+      background: white;
+    }
+    
+    .header-logo-link:hover .header-logo {
+      transform: scale(1.08) rotate(-5deg);
+    }
+    
+    /* Container for nav buttons with margin-right to shift left */
+    .top-nav {
+      margin-right: 100px; /* Shift buttons 40px left from right edge */
+    }
+    
+    .top-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 12px; /* reduced gap for better balance */
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+    }
+    
+    .top-nav li a button {
+      background: linear-gradient(90deg, #0288d1 0%, #2196f3 100%);
+      color: #fff;
+      border: none;
+      padding: 13px 32px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      border-radius: 14px;
+      font-size: 1.08rem;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(80,80,180,0.10);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .top-nav li a button:hover {
+      background: linear-gradient(90deg, #2196f3 0%, #0288d1 100%);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 22px rgba(80,80,180,0.20);
+    }
+    
+    /* Main content styles */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      margin-top: 90px; /* Account for fixed header */
+    }
+    
+    .title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #1e40af;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      color: #3b82f6;
+      max-width: 600px;
+    }
+    
+    /* Start button and menu styles */
+    .start-container {
+      position: relative;
+      margin-top: 20px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .start-btn {
+      background: linear-gradient(90deg, #0288d1 0%, #2196f3 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 4px 18px rgba(80,80,180,0.10);
+      margin-bottom: 30px; /* Space for the menu to appear below */
+    }
+    
+    .start-btn:hover {
+      background: linear-gradient(90deg, #2196f3 0%, #0288d1 100%);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 22px rgba(80,80,180,0.20);
+    }
+    
+    .start-btn.active {
+      background: linear-gradient(90deg, #6366f1 0%, #5eead4 100%);
+    }
+    
+    /* Pokemon-style menu container */
+    .menu-container {
+      display: flex;
+      gap: 20px;
+      opacity: 0;
+      visibility: hidden;
+      margin-top: 20px;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    
+    /* Show menu on hover or when active class is present */
+    .start-container:hover .menu-container,
+    .menu-container.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Pokemon-style menu items */
+    .menu-item {
+      width: 150px;
+      height: 150px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(80, 80, 180, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: #2563eb;
+      border: 3px solid #bfdbfe;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .menu-item:hover {
+      transform: translateY(-10px);
+      border-color: #3b82f6;
+    }
+    
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to bottom, #dbeafe, transparent);
+      z-index: 0;
+    }
+    
+    .menu-item-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .menu-item-text {
+      font-weight: 600;
+      font-size: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Animation classes */
+    .slide-in-elliptic-top-fwd {
+      -webkit-animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+              animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+    
+    /* Animation delay for staggered effect */
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+    
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+    
+    /* Animation keyframes */
+    @-webkit-keyframes slide-in-elliptic-top-fwd {
+      0% {
+        -webkit-transform: translateY(-600px) rotateX(-30deg) scale(0);
+                transform: translateY(-600px) rotateX(-30deg) scale(0);
+        -webkit-transform-origin: 50% 100%;
+                transform-origin: 50% 100%;
+        opacity: 0;
+      }
+      100% {
+        -webkit-transform: translateY(0) rotateX(0) scale(1);
+                transform: translateY(0) rotateX(0) scale(1);
+        -webkit-transform-origin: 50% 1400px;
+                transform-origin: 50% 1400px;
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slide-in-elliptic-top-fwd {
+      0% {
+        -webkit-transform: translateY(-600px) rotateX(-30deg) scale(0);
+                transform: translateY(-600px) rotateX(-30deg) scale(0);
+        -webkit-transform-origin: 50% 100%;
+                transform-origin: 50% 100%;
+        opacity: 0;
+      }
+      100% {
+        -webkit-transform: translateY(0) rotateX(0) scale(1);
+                transform: translateY(0) rotateX(0) scale(1);
+        -webkit-transform-origin: 50% 1400px;
+                transform-origin: 50% 1400px;
+        opacity: 1;
+      }
+    }
+    
+    /* Background decoration */
+    .bg-decoration {
+      position: absolute;
+      border-radius: 50%;
+      background-color: #bfdbfe;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .bg-decoration-1 {
+      top: 20%;
+      left: 10%;
+      width: 300px;
+      height: 300px;
+    }
+    
+    .bg-decoration-2 {
+      bottom: 15%;
+      right: 10%;
+      width: 200px;
+      height: 200px;
+      background-color: #93c5fd;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .header-top {
+        padding: 12px 18px;
+        height: auto;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 6vw;
+      }
+      
+      .top-nav ul {
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      
+      .menu-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .menu-item {
+        width: 130px;
+        height: 130px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header - copied from the provided code -->
+  <header class="header-top">
+    <a href="landing page.html" class="header-logo-link">
+      <img src="Compass_Site/Assets/images/compass_logo.gif" alt="Compass Logo" class="header-logo" />
+      <span style="font-family: 'Montserrat',sans-serif; font-weight:700; font-size:1.2rem; color:#3730a3;"></span>
+    </a>
+    <nav class="top-nav">
+      <ul>
+        <li><a href="./LoginSignup/login.php"><button>Log out</button></a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="bg-decoration bg-decoration-1"></div>
+    <div class="bg-decoration bg-decoration-2"></div>
+    
+    <h1 class="title">Welcome to Compass Travel</h1>
+    <p class="subtitle">Your ultimate travel companion for planning adventures and exploring new destinations</p>
+    
+    <div class="start-container">
+      <button class="start-btn" id="start-button">Start</button>
+      
+      <div class="menu-container" id="menu-container">
+        <a href="Trip Planner.php" class="menu-item" id="menu-item-1">
+          <div class="menu-item-icon">🗺️</div>
+          <div class="menu-item-text">Trip Planner</div>
+        </a>
+        <a href="Destination.html" class="menu-item" id="menu-item-2">
+          <div class="menu-item-icon">🏝️</div>
+          <div class="menu-item-text">Destinations</div>
+        </a>
+        <a href="Travelog.php" class="menu-item" id="menu-item-3">
+          <div class="menu-item-icon">📔</div>
+          <div class="menu-item-text">Travel Log</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const startButton = document.getElementById('start-button');
+      const menuContainer = document.getElementById('menu-container');
+      const menuItem1 = document.getElementById('menu-item-1');
+      const menuItem2 = document.getElementById('menu-item-2');
+      const menuItem3 = document.getElementById('menu-item-3');
+      
+      let menuActive = false;
+      
+      // Function to add animation classes
+      function addAnimationClasses() {
+        menuItem1.classList.add('slide-in-elliptic-top-fwd', 'delay-1');
+        menuItem2.classList.add('slide-in-elliptic-top-fwd', 'delay-2');
+        menuItem3.classList.add('slide-in-elliptic-top-fwd', 'delay-3');
+      }
+      
+      // Function to remove animation classes
+      function removeAnimationClasses() {
+        if (!menuActive) {
+          menuItem1.classList.remove('slide-in-elliptic-top-fwd', 'delay-1');
+          menuItem2.classList.remove('slide-in-elliptic-top-fwd', 'delay-2');
+          menuItem3.classList.remove('slide-in-elliptic-top-fwd', 'delay-3');
+        }
+      }
+      
+      // Add animation when hovering over the start button
+      startButton.addEventListener('mouseenter', function() {
+        if (!menuActive) {
+          // Short timeout to ensure the menu is visible first
+          setTimeout(addAnimationClasses, 50);
+        }
+      });
+      
+      // Remove animation classes when mouse leaves the container
+      document.querySelector('.start-container').addEventListener('mouseleave', function() {
+        if (!menuActive) {
+          removeAnimationClasses();
+        }
+      });
+      
+      // Toggle menu visibility when clicking the start button
+      startButton.addEventListener('click', function() {
+        menuActive = !menuActive;
+        
+        if (menuActive) {
+          menuContainer.classList.add('active');
+          startButton.classList.add('active');
+          addAnimationClasses();
+        } else {
+          menuContainer.classList.remove('active');
+          startButton.classList.remove('active');
+          removeAnimationClasses();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
